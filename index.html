@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Ventas WA">
+  <link id="favicon-link" rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' rx='28' fill='%230f172a'/%3E%3Crect x='6' y='6' width='116' height='116' rx='24' fill='%231e293b' stroke='%2325d366' stroke-width='4'/%3E%3Cpath fill='%2325d366' d='M64.2 28C44.3 28 28.1 44.1 28.1 64c0 6.4 1.7 12.6 4.8 18.1L27.8 100l18.4-4.8c5.3 2.9 11.2 4.4 17.9 4.4 19.9 0 36.1-16.1 36.1-36 0-9.6-3.7-18.7-10.5-25.5C82.9 31.7 73.8 28 64.2 28zm0 6c8 0 15.5 3.1 21.2 8.8 5.6 5.7 8.8 13.2 8.8 21.2 0 16.5-13.5 30-30 30-5.4 0-10.7-1.4-15.3-4.2l-1.1-.6-11.3 3 3-11-.7-1.2c-3-4.7-4.6-10.3-4.6-16 0-16.5 13.5-30 30-30z'/%3E%3C/svg%3E">
+  <link id="apple-touch-icon-link" rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' rx='28' fill='%230f172a'/%3E%3C/svg%3E">
+  <title>Asistente de Ventas - WhatsApp</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --subcard-bg: rgba(15, 23, 42, 0.55);
+      --text-main: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --accent: #25d366;
+      --accent-hover: #1ebd57;
+      --accent-soft: rgba(37, 211, 102, 0.14);
+      --border: #334155;
+      --border-light: rgba(148, 163, 184, 0.18);
+      --input-bg: #0b1329;
+      --danger: #f87171;
+      --danger-bg: rgba(248, 113, 113, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(circle at 15% 10%, rgba(37, 211, 102, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 85% 90%, rgba(56, 189, 248, 0.06) 0%, transparent 45%);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 28px 14px 44px;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 540px;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px 24px;
+      box-shadow:
+        0 20px 40px -15px rgba(2, 6, 23, 0.7),
+        0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 22px 18px;
+        border-radius: 16px;
+      }
+    }
+
+    /* Encabezado amigable y profesional */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .header-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, rgba(37, 211, 102, 0.22), rgba(37, 211, 102, 0.06));
+      border: 1px solid rgba(37, 211, 102, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      flex-shrink: 0;
+      box-shadow: 0 6px 16px -4px rgba(37, 211, 102, 0.25);
+    }
+
+    .header-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
+    }
+
+    .header-text h1 {
+      font-size: 1.24rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.015em;
+      line-height: 1.25;
+    }
+
+    .header-text p {
+      font-size: 0.81rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .btn-install-header {
+      background-color: var(--accent-soft);
+      border: 1px solid rgba(37, 211, 102, 0.35);
+      color: var(--accent);
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 8px 11px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+      transition: all 0.18s ease;
+    }
+
+    .btn-install-header:hover {
+      background-color: rgba(37, 211, 102, 0.24);
+      transform: translateY(-1px);
+    }
+
+    .btn-install-header svg {
+      width: 15px;
+      height: 15px;
+      stroke: currentColor;
+      fill: none;
+    }
+
+    /* Grupos de formulario */
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 7px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 7px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .label-row label {
+      margin-bottom: 0;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background-color: var(--input-bg);
+      color: var(--text-main);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+
+    input[type="text"]:hover,
+    input[type="tel"]:hover,
+    select:hover,
+    textarea:hover {
+      border-color: #475569;
+    }
+
+    input[type="text"]:focus,
+    input[type="tel"]:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3.5px rgba(37, 211, 102, 0.16);
+      background-color: #091022;
+    }
+
+    input.input-error,
+    select.input-error,
+    textarea.input-error {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 3px var(--danger-bg);
+    }
+
+    /* Estilizado de Select con flecha personalizada */
+    select {
+      appearance: none;
+      -webkit-appearance: none;
+      padding-right: 40px;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 13px center;
+    }
+
+    /* Contenedor de Teléfono */
+    .phone-container {
+      display: flex;
+      gap: 10px;
+    }
+
+    .phone-code-wrapper {
+      position: relative;
+      width: 98px;
+      flex-shrink: 0;
+    }
+
+    .plus-sign {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.95rem;
+      pointer-events: none;
+    }
+
+    .phone-code {
+      padding-left: 27px !important;
+      font-weight: 600;
+      text-align: left;
+    }
+
+    .phone-input-wrapper {
+      position: relative;
+      flex: 1;
+    }
+
+    .notice-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .notice {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    .phone-preview-badge {
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--accent);
+      background-color: var(--accent-soft);
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(37, 211, 102, 0.28);
+    }
+
+    /* Bloques dinámicos con animación suave */
+    .dynamic-block {
+      background-color: var(--subcard-bg);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 18px;
+      animation: slideFade 0.22s ease-out;
+    }
+
+    .sub-group {
+      animation: slideFade 0.2s ease-out;
+    }
+
+    @keyframes slideFade {
+      from {
+        opacity: 0;
+        transform: translateY(-5px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Área de Vista Previa */
+    .copy-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 0.74rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.18s ease;
+    }
+
+    .copy-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background-color: var(--accent-soft);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 195px;
+      line-height: 1.5;
+      font-size: 0.88rem;
+      background-color: #080f1d;
+    }
+
+    .textarea-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
+
+    /* Banner de notificación amigable (sin usar alert nativo) */
+    .feedback-box {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 11px 13px;
+      border-radius: 10px;
+      font-size: 0.83rem;
+      font-weight: 500;
+      margin-bottom: 14px;
+      animation: slideFade 0.2s ease-out;
+    }
+
+    .feedback-box.error {
+      background-color: var(--danger-bg);
+      border: 1px solid rgba(248, 113, 113, 0.35);
+      color: #fca5a5;
+    }
+
+    .feedback-box.success {
+      background-color: var(--accent-soft);
+      border: 1px solid rgba(37, 211, 102, 0.35);
+      color: #86efac;
+    }
+
+    /* Botón Principal Enviar */
+    .btn-send {
+      width: 100%;
+      background: linear-gradient(180deg, #28e06d 0%, #22c35e 100%);
+      color: #052e16;
+      font-size: 1.02rem;
+      font-weight: 700;
+      padding: 15px 18px;
+      border: none;
+      border-radius: 11px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 8px 20px -5px rgba(37, 211, 102, 0.45);
+      transition: background 0.2s ease, transform 0.12s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-send:hover {
+      background: linear-gradient(180deg, #2be871 0%, #1ebd57 100%);
+      box-shadow: 0 10px 24px -4px rgba(37, 211, 102, 0.55);
+      transform: translateY(-1px);
+    }
+
+    .btn-send:active {
+      transform: scale(0.985);
+    }
+
+    .btn-send svg {
+      width: 21px;
+      height: 21px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+
+    /* Modal de Guía de Instalación en Móvil */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(2, 6, 23, 0.78);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 100;
+      animation: slideFade 0.18s ease-out;
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 440px;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px 20px;
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.65);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .modal-header h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .btn-close-modal {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    .btn-close-modal:hover {
+      color: #ffffff;
+      background-color: rgba(255, 255, 255, 0.06);
+    }
+
+    .install-step-card {
+      background-color: var(--subcard-bg);
+      border: 1px solid var(--border-light);
+      border-radius: 11px;
+      padding: 13px 14px;
+      margin-bottom: 12px;
+    }
+
+    .install-step-card h3 {
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .install-step-card p {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.45;
+    }
+
+    .btn-modal-ok {
+      width: 100%;
+      margin-top: 6px;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background-color: var(--input-bg);
+      color: var(--text-main);
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .btn-modal-ok:hover {
+      border-color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+  <main class="container">
+    <!-- Encabezado -->
+    <header class="header">
+      <div class="header-brand">
+        <div class="header-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.04 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 14.99 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67Z"/>
+          </svg>
+        </div>
+        <div class="header-text">
+          <h1>Panel de Envío de Ventas</h1>
+          <p>Cotizaciones y planes listos para enviar por WhatsApp</p>
+        </div>
+      </div>
+
+      <button type="button" id="btn-install-app" class="btn-install-header" title="Anclar ícono en el teléfono">
+        <svg viewBox="0 0 24 24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+          <line x1="12" y1="18" x2="12.01" y2="18"></line>
+        </svg>
+        <span id="install-btn-label">Instalar App</span>
+      </button>
+    </header>
+
+    <!-- Teléfono -->
+    <div class="form-group">
+      <label for="client-phone">Teléfono del Cliente</label>
+      <div class="phone-container">
+        <div class="phone-code-wrapper">
+          <span class="plus-sign">+</span>
+          <input type="text" id="phone-code" class="phone-code" value="58" maxlength="4" inputmode="numeric" placeholder="58" aria-label="Código de país">
+        </div>
+        <div class="phone-input-wrapper">
+          <input type="tel" id="client-phone" inputmode="numeric" placeholder="Ej: 04121234567">
+        </div>
+      </div>
+      <div class="notice-row">
+        <p class="notice">Se limpia automáticamente el cero inicial y caracteres especiales.</p>
+        <span id="phone-badge" class="phone-preview-badge">+58 ...</span>
+      </div>
+    </div>
+
+    <!-- Tipo de Gestión -->
+    <div class="form-group">
+      <label for="main-option">Información a Enviar</label>
+      <select id="main-option">
+        <option value="" disabled selected>Selecciona una opción...</option>
+        <option value="especifico">Información de un plan en específico</option>
+        <option value="instalacion">Costo de instalación</option>
+        <option value="planes">Costo de los planes</option>
+      </select>
+    </div>
+
+    <!-- Bloque 1: Plan Específico -->
+    <div id="block-especifico" class="dynamic-block hidden">
+      <div class="form-group">
+        <label for="esp-tecnologia">Tecnología</label>
+        <select id="esp-tecnologia">
+          <option value="" disabled selected>Selecciona tecnología...</option>
+          <option value="FTTH">FTTH</option>
+          <option value="FTTO">FTTO</option>
+        </select>
+      </div>
+
+      <div class="form-group sub-group hidden" id="group-esp-ftth">
+        <label for="esp-plan-ftth">Velocidad FTTH</label>
+        <select id="esp-plan-ftth">
+          <option value="" disabled selected>Selecciona plan...</option>
+          <option value="Fibranet_200MB">Fibranet_200MB</option>
+          <option value="Fibranet_400MB">Fibranet_400MB</option>
+          <option value="Fibranet_500MB">Fibranet_500MB</option>
+          <option value="Fibranet_600MB">Fibranet_600MB</option>
+          <option value="Fibranet_800MB">Fibranet_800MB</option>
+        </select>
+      </div>
+
+      <div class="form-group sub-group hidden" id="group-esp-ftto">
+        <label for="esp-plan-ftto">Velocidad FTTO</label>
+        <select id="esp-plan-ftto">
+          <option value="" disabled selected>Selecciona plan...</option>
+          <option value="FiberPon_400mb">FiberPon_400mb</option>
+          <option value="FiberPon_600mb">FiberPon_600mb</option>
+          <option value="FiberPon_1gb">FiberPon_1gb</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Bloque 2: Costo Instalación -->
+    <div id="block-instalacion" class="dynamic-block hidden">
+      <div class="form-group">
+        <label for="inst-tecnologia">Tecnología</label>
+        <select id="inst-tecnologia">
+          <option value="" disabled selected>Selecciona tecnología...</option>
+          <option value="FTTH">FTTH</option>
+          <option value="FTTO">FTTO</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="inst-tipo">Tipo de Instalación</label>
+        <select id="inst-tipo">
+          <option value="" disabled selected>Selecciona equipo...</option>
+          <option value="MODEM_SIN_ROUTER">MODEM SIN ROUTER</option>
+          <option value="MODEMROUTER">MODEMROUTER</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Bloque 3: Costo de Planes -->
+    <div id="block-planes" class="dynamic-block hidden">
+      <div class="form-group">
+        <label for="planes-tipo">Modalidad de Equipo</label>
+        <select id="planes-tipo">
+          <option value="" disabled selected>Selecciona modalidad...</option>
+          <option value="MODEM_SIN_ROUTER">MODEM SIN ROUTER</option>
+          <option value="MODEMROUTER">MODEMROUTER</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Vista previa editable -->
+    <div class="form-group">
+      <div class="label-row">
+        <label for="preview-text">Mensaje a Enviar (Editable)</label>
+        <button type="button" id="btn-copy" class="copy-btn" title="Copiar mensaje">
+          <span id="copy-label">Copiar texto</span>
+        </button>
+      </div>
+      <textarea id="preview-text" placeholder="El texto pregrabado se cargará automáticamente aquí..."></textarea>
+      <div class="textarea-footer">
+        <span>Puedes editar o personalizar el mensaje antes de enviar</span>
+        <span id="char-count">0 caracteres</span>
+      </div>
+    </div>
+
+    <!-- Notificación en página -->
+    <div id="feedback-box" class="feedback-box hidden" role="status"></div>
+
+    <!-- Botón Enviar -->
+    <button type="button" id="btn-submit" class="btn-send">
+      <svg viewBox="0 0 24 24">
+        <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.04 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 14.99 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67Z"/>
+      </svg>
+      Enviar a WhatsApp
+    </button>
+  </main>
+
+  <!-- Modal con instrucciones para anclar ícono en el teléfono -->
+  <div id="install-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="install-modal-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 id="install-modal-title">Crear Ícono en Pantalla Principal</h2>
+        <button type="button" id="btn-close-modal" class="btn-close-modal" aria-label="Cerrar">&times;</button>
+      </div>
+
+      <div class="install-step-card">
+        <h3>En Android (Chrome)</h3>
+        <p>1. Toca el botón de menú de tres puntos <strong>(⋮)</strong> arriba a la derecha.<br>2. Selecciona <strong>Instalar aplicación</strong> o <strong>Agregar a la pantalla principal</strong>.</p>
+      </div>
+
+      <div class="install-step-card">
+        <h3>En iPhone / iPad (Safari)</h3>
+        <p>1. Toca el botón <strong>Compartir</strong> (cuadrado con flecha hacia arriba en la barra inferior).<br>2. Desliza hacia abajo y pulsa <strong>Agregar a inicio</strong>.</p>
+      </div>
+
+      <button type="button" id="btn-modal-understand" class="btn-modal-ok">Entendido</button>
+    </div>
+  </div>
+
+  <script>
+    // Base de datos de mensajes pregrabados
+    const messages = {
+      especifico: {
+        FTTH: {
+          Fibranet_200MB: `Costo de la mensualidad: 22$
+
+Internet: 200mb simétricos
+ 
+Ilimitado.
+ 
+El wifi no se acabará en todo el mes.
+ 
+ 
+ 
+Televisión streaming:
+ 
+(Mas de 130  canales
+|| 50 en full HD y 43 en HD)
+ 
+ para disfrutar en:
+ 
+Televisor inteligente 
+Tablet 
+Teléfono 
+Computadora
+ 
+ 
+ 
+Teléfonia:
+ 
+1000 minutos a llamadas nacionales 
+ 
+ 
+500 minutos a llamadas internacionales 
+ 
+ 
+Para disfrutar en teléfono fijo
+ 
+O su dispositivo android o /IOS`,
+
+          Fibranet_400MB: `Costo de la mensualidad: 31$
+
+Internet: 400mb simétricos
+ 
+Ilimitado.
+ 
+El wifi no se acabará en todo el mes.
+ 
+ 
+ 
+Televisión streaming:
+ 
+(Mas de 130  canales
+|| 50 en full HD y 43 en HD)
+ 
+ para disfrutar en:
+ 
+Televisor inteligente 
+Tablet 
+Teléfono 
+Computadora
+ 
+ 
+ 
+Teléfonia:
+ 
+1000 minutos a llamadas nacionales 
+ 
+ 
+500 minutos a llamadas internacionales 
+ 
+ 
+Para disfrutar en teléfono fijo
+ 
+O su dispositivo android o /IOS
+ 
+ 
+ 
+ 
+Servicios de salud íntegral:
+ 
+*Telemedicina*: Este servicio permite a los pacientes
+consultar a médicos por videollamadas
+a través de Bruno, sin necesidad de
+salir de whatsapp ni de asistir a un centro
+de salud. Esto resulta ideal para recibir
+consejos médicos, diagnósticos, tratamientos y seguimiento
+de enfermedades
+desde la comodidad del hogar.
+
+Alcance del servicio:
+ 
+- Diagnósticos.
+- Recibir orientación médica.
+- Lectura de exámenes médicos.
+- Seguimiento post-asistencia.
+
+
+Este beneficio es valido para el titular del contrato y un beneficiario adicional.`,
+
+          Fibranet_500MB: `Costo de la mensualidad: 33$
+
+Internet: 500mb simétricos
+ 
+Ilimitado.
+ 
+El wifi no se acabará en todo el mes.
+ 
+ 
+ 
+Televisión streaming:
+ 
+(Mas de 130  canales
+|| 50 en full HD y 43 en HD)
+ 
+ para disfrutar en:
+ 
+Televisor inteligente 
+Tablet 
+Teléfono 
+Computadora
+ 
+ 
+ 
+Teléfonia:
+ 
+1000 minutos a llamadas nacionales 
+ 
+ 
+500 minutos a llamadas internacionales 
+ 
+ 
+Para disfrutar en teléfono fijo
+ 
+O su dispositivo android o /IOS
+ 
+ 
+ 
+ 
+Servicios de salud íntegral:
+ 
+*Telemedicina*: Este servicio permite a los pacientes
+consultar a médicos por videollamadas
+a través de Bruno, sin necesidad de
+salir de whatsapp ni de asistir a un centro
+de salud. Esto resulta ideal para recibir
+consejos médicos, diagnósticos, tratamientos y seguimiento
+de enfermedades
+desde la comodidad del hogar.
+ 
+Alcance del servicio:
+ 
+- Diagnósticos.
+- Recibir orientación médica.
+- Lectura de exámenes médicos.
+- Seguimiento post-asistencia.
+ 
+*Atención médica domiciliaria*:  Es realizada por profesionales médicos
+y enfermeros directamente en el domicilio
+del paciente o el lugar del trabajo, siendo
+muy útil y una ventaja para personas que
+tienen dificultades para trasladarse a un centro médico, ya
+sea por
+limitaciones de movilidad o por condiciones de salud.
+Este servicio de atención médica en el domicilio se brindará
+siempre que se
+encuentre dentro de la zona de cobertura y en horarios
+establecidos.
+ 
+• Aplicación de tratamientos unidosis intravenoso,
+intramuscular, oral,
+respiratorio.
+• Generación automática de orden de farmacia.
+• Servicio proporcionado por profesionales médicos y
+enfermeros.
+
+
+Este servicio es valido para el titular del contrato y un beneficiario adicional`,
+
+          Fibranet_600MB: `Costo de la mensualidad: 45$
+
+Internet: 600mb simétricos
+ 
+Ilimitado.
+ 
+El wifi no se acabará en todo el mes.
+ 
+ 
+ 
+Televisión streaming:
+ 
+(Mas de 130  canales
+|| 50 en full HD y 43 en HD)
+ 
+ para disfrutar en:
+ 
+Televisor inteligente 
+Tablet 
+Teléfono 
+Computadora
+ 
+ 
+ 
+Teléfonia:
+ 
+1000 minutos a llamadas nacionales 
+ 
+ 
+500 minutos a llamadas internacionales 
+ 
+ 
+Para disfrutar en teléfono fijo
+ 
+O su dispositivo android o /IOS
+ 
+ 
+ 
+ 
+Servicios de salud íntegral:
+ 
+*Telemedicina*: Este servicio permite a los pacientes
+consultar a médicos por videollamadas
+a través de Bruno, sin necesidad de
+salir de whatsapp ni de asistir a un centro
+de salud. Esto resulta ideal para recibir
+consejos médicos, diagnósticos, tratamientos y seguimiento
+de enfermedades
+desde la comodidad del hogar.
+ 
+Alcance del servicio:
+ 
+- Diagnósticos.
+- Recibir orientación médica.
+- Lectura de exámenes médicos.
+- Seguimiento post-asistencia.
+ 
+*Atención médica domiciliaria*:  Es realizada por profesionales médicos
+y enfermeros directamente en el domicilio
+del paciente o el lugar del trabajo, siendo
+muy útil y una ventaja para personas que
+tienen dificultades para trasladarse a un centro médico, ya
+sea por
+limitaciones de movilidad o por condiciones de salud.
+Este servicio de atención médica en el domicilio se brindará
+siempre que se
+encuentre dentro de la zona de cobertura y en horarios
+establecidos.
+ 
+• Aplicación de tratamientos unidosis intravenoso,
+intramuscular, oral,
+respiratorio.
+• Generación automática de orden de farmacia.
+• Servicio proporcionado por profesionales médicos y
+enfermeros.
+ 
+*entrega de medicamentos*: Permite a los pacientes recibir los medicamentos directamente en la
+comodidad de su hogar, luego de una atención por
+Telemedicina o una Atención
+Médica Domiciliaria, por un período de hasta siete (7) días
+de tratamiento con
+prescripción de los médicos de Nueve Once, considerando las
+zonas de cobertura
+establecidas.
+ 
+*Traslados en ambulancias*: El objetivo principal es proporcionar el transporte en ambulancias por
+emergencias,
+asegurando que los pacientes lleguen a su destino de manera
+rápida y segura,
+los traslados se realizarán siempre y cuando se encuentren
+dentro de la zona de
+cobertura y en los horarios establecidos.
+ 
+Este servicio cuenta con:
+ 
+- Profesionales expertos que se encargan de la movilización
+del paciente.
+- Amplia flota de ambulancias propias y con aliados.
+ 
+ 
+ 
+Este servicio es para el titular del contrato y 2
+beneficiarios adicionales`,
+
+          Fibranet_800MB: `Costo de la  mensualidad: 61$
+
+Internet: 800mb simétricos
+ 
+Ilimitado.
+ 
+El wifi no se acabará en todo el mes.
+ 
+ 
+ 
+Televisión streaming:
+ 
+(Mas de 130  canales
+|| 50 en full HD y 43 en HD)
+ 
+ para disfrutar en:
+ 
+Televisor inteligente 
+Tablet 
+Teléfono 
+Computadora
+ 
+ 
+ 
+Teléfonia:
+ 
+1000 minutos a llamadas nacionales 
+ 
+ 
+500 minutos a llamadas internacionales 
+ 
+ 
+Para disfrutar en teléfono fijo
+ 
+O su dispositivo android o /IOS
+ 
+ 
+ 
+ 
+Servicios de salud íntegral:
+ 
+*Telemedicina*: Este servicio permite a los pacientes
+consultar a médicos por videollamadas
+a través de Bruno, sin necesidad de
+salir de whatsapp ni de asistir a un centro
+de salud. Esto resulta ideal para recibir
+consejos médicos, diagnósticos, tratamientos y seguimiento
+de enfermedades
+desde la comodidad del hogar.
+ 
+Alcance del servicio:
+ 
+- Diagnósticos.
+- Recibir orientación médica.
+- Lectura de exámenes médicos.
+- Seguimiento post-asistencia.
+ 
+*Atención médica domiciliaria*:  Es realizada por profesionales médicos
+y enfermeros directamente en el domicilio
+del paciente o el lugar del trabajo, siendo
+muy útil y una ventaja para personas que
+tienen dificultades para trasladarse a un centro médico, ya
+sea por
+limitaciones de movilidad o por condiciones de salud.
+Este servicio de atención médica en el domicilio se brindará
+siempre que se
+encuentre dentro de la zona de cobertura y en horarios
+establecidos.
+ 
+• Aplicación de tratamientos unidosis intravenoso,
+intramuscular, oral,
+respiratorio.
+• Generación automática de orden de farmacia.
+• Servicio proporcionado por profesionales médicos y
+enfermeros.
+ 
+*entrega de medicamentos*: Permite a los pacientes recibir los medicamentos directamente en la
+comodidad de su hogar, luego de una atención por
+Telemedicina o una Atención
+Médica Domiciliaria, por un período de hasta siete (7) días
+de tratamiento con
+prescripción de los médicos de Nueve Once, considerando las
+zonas de cobertura
+establecidas.
+ 
+*Traslados en ambulancias*: El objetivo principal es proporcionar el transporte en ambulancias por
+emergencias,
+asegurando que los pacientes lleguen a su destino de manera
+rápida y segura,
+los traslados se realizarán siempre y cuando se encuentren
+dentro de la zona de
+cobertura y en los horarios establecidos.
+ 
+Este servicio cuenta con:
+ 
+- Profesionales expertos que se encargan de la movilización
+del paciente.
+- Amplia flota de ambulancias propias y con aliados.
+ 
+ 
+ 
+Este servicio es para el titular del contrato y 4
+beneficiarios adicionales`
+        },
+        FTTO: {
+          FiberPon_400mb: `Costo de la mensualidad: 30$
+
+Internet: 400mb simétricos
+ 
+Ilimitado.
+ 
+El wifi no se acabará en todo el mes.
+ 
+ 
+ 
+Televisión streaming:
+ 
+(Mas de 130  canales
+|| 50 en full HD y 43 en HD)
+ 
+ para disfrutar en:
+ 
+Televisor inteligente 
+Tablet 
+Teléfono 
+Computadora
+ 
+ 
+ 
+Teléfonia:
+ 
+1000 minutos a llamadas nacionales 
+ 
+ 
+500 minutos a llamadas internacionales 
+ 
+ 
+Para disfrutar en teléfono fijo
+ 
+O su dispositivo android o /IOS`,
+
+          FiberPon_600mb: `Costo de la mensualidad: 178$
+
+Internet: 600mb simétricos
+ 
+Ilimitado.
+ 
+El wifi no se acabará en todo el mes.
+ 
+ 
+ 
+Televisión streaming:
+ 
+(Mas de 130  canales
+|| 50 en full HD y 43 en HD)
+ 
+ para disfrutar en:
+ 
+Televisor inteligente 
+Tablet 
+Teléfono 
+Computadora
+ 
+ 
+ 
+Teléfonia:
+ 
+1000 minutos a llamadas nacionales 
+ 
+ 
+500 minutos a llamadas internacionales 
+ 
+ 
+Para disfrutar en teléfono fijo
+ 
+O su dispositivo android o /IOS`,
+
+          FiberPon_1gb: `Costo de la mensualidad: 699$
+
+Internet: 1Gb simétricos
+ 
+Ilimitado.
+ 
+El wifi no se acabará en todo el mes.
+ 
+ 
+ 
+Televisión streaming:
+ 
+(Mas de 130  canales
+|| 50 en full HD y 43 en HD)
+ 
+ para disfrutar en:
+ 
+Televisor inteligente 
+Tablet 
+Teléfono 
+Computadora
+ 
+ 
+ 
+Teléfonia:
+ 
+1000 minutos a llamadas nacionales 
+ 
+ 
+500 minutos a llamadas internacionales 
+ 
+ 
+Para disfrutar en teléfono fijo
+ 
+O su dispositivo android o /IOS`
+        }
+      },
+      instalacion: {
+        FTTH: {
+          MODEM_SIN_ROUTER: `Saludos,
+
+El costo de la instalacion es dé 5$ (No incluye router)
+
+Esto incluye:
+
+El material que se utilizará en la instalacion
+
+La visita técnica para realizar la instalacion del servicio.
+
+El modem de netuno en calidad de alquiler que está incluido en la mensualidad.
+
+==============================================
+
+El pago de las mensualidades son los primeros 5 dias de cada mes, en caso de no realizar el pago tendrá una prorroga de pago hasta el 17 de cada mes,  de no realizar el pago antes del 17  se realiza la desconexión del servicio.`,
+
+          MODEMROUTER: `Saludos,
+
+El costo de la instalacion es dé 15$ 
+
+Esto incluye:
+
+El material que se utilizará en la instalacion
+
+La visita técnica para realizar la instalacion del servicio.
+
+El modemrouter de netuno en calidad de alquiler que está incluido en la mensualidad.
+
+==============================================
+
+El pago de las mensualidades son los primeros 5 dias de cada mes, en caso de no realizar el pago tendrá una prorroga de pago hasta el 17 de cada mes,  de no realizar el pago antes del 17  se realiza la desconexión del servicio.`
+        },
+        FTTO: {
+          MODEM_SIN_ROUTER: `Saludos,
+
+El costo de la instalacion es dé 10$  (No incluye router)
+
+Esto incluye:
+
+El material que se utilizará en la instalacion
+
+La visita técnica para realizar la instalacion del servicio.
+
+El modem de netuno en calidad de alquiler que está incluido en la mensualidad.
+
+==============================================
+
+El pago de las mensualidades son los primeros 5 dias de cada mes, en caso de no realizar el pago tendrá una prorroga de pago hasta el 17 de cada mes,  de no realizar el pago antes del 17  se realiza la desconexión del servicio.`,
+
+          MODEMROUTER: `Saludos,
+
+El costo de la instalacion es dé 39$
+
+Esto incluye:
+
+El material que se utilizará en la instalacion
+
+La visita técnica para realizar la instalacion del servicio.
+
+El modemrouter de netuno en calidad de alquiler que está incluido en la mensualidad.
+
+==============================================
+
+El pago de las mensualidades son los primeros 5 dias de cada mes, en caso de no realizar el pago tendrá una prorroga de pago hasta el 17 de cada mes,  de no realizar el pago antes del 17  se realiza la desconexión del servicio.`
+        }
+      },
+      planes: {
+        MODEM_SIN_ROUTER: `200 Mbps $22: Internet, TV streaming y telefonía fija
+
+
+400 Mbps $31: Internet, TV streaming, telefonía fija y (telemedicina para el titular y 1 beneficiarios).
+
+500 Mbps  $33: Internet, TV streaming, telefonía fija (telemedicina y atención médica domiciliaria para el titular y 1 beneficiarios).
+
+600 Mbps ($45): Internet, TV streaming, telefonía fija y Salud Integral (Telemedicina, atencion médica domiciliaria, medicamentos por 7 días y ambulancia para el titular y 2 beneficiarios).
+
+
+800 Mbps ($61): Internet, TV streaming, telefonía fija y Salud Integral (Telemedicina, atencion médica domiciliaria, medicamentos por 7 días y ambulancia para el titular y 4 beneficiarios).`,
+
+        MODEMROUTER: `400 Mbps $31: Internet, TV streaming, telefonía fija y (telemedicina para el titular y 1 beneficiarios).
+
+500 Mbps  $33: Internet, TV streaming, telefonía fija (telemedicina y atención médica domiciliaria para el titular y 1 beneficiarios).
+
+600 Mbps ($45): Internet, TV streaming, telefonía fija y Salud Integral (Telemedicina, atencion médica domiciliaria, medicamentos por 7 días y ambulancia para el titular y 2 beneficiarios).
+
+
+800 Mbps ($61): Internet, TV streaming, telefonía fija y Salud Integral (Telemedicina, atencion médica domiciliaria, medicamentos por 7 días y ambulancia para el titular y 4 beneficiarios).`
+      }
+    };
+
+    // Referencias DOM
+    const mainOption = document.getElementById('main-option');
+    const blockEspecifico = document.getElementById('block-especifico');
+    const blockInstalacion = document.getElementById('block-instalacion');
+    const blockPlanes = document.getElementById('block-planes');
+
+    const espTecnologia = document.getElementById('esp-tecnologia');
+    const groupEspFtth = document.getElementById('group-esp-ftth');
+    const groupEspFtto = document.getElementById('group-esp-ftto');
+    const espPlanFtth = document.getElementById('esp-plan-ftth');
+    const espPlanFtto = document.getElementById('esp-plan-ftto');
+
+    const instTecnologia = document.getElementById('inst-tecnologia');
+    const instTipo = document.getElementById('inst-tipo');
+
+    const planesTipo = document.getElementById('planes-tipo');
+
+    const previewText = document.getElementById('preview-text');
+    const phoneCode = document.getElementById('phone-code');
+    const clientPhone = document.getElementById('client-phone');
+    const phoneBadge = document.getElementById('phone-badge');
+    const charCount = document.getElementById('char-count');
+    const btnCopy = document.getElementById('btn-copy');
+    const copyLabel = document.getElementById('copy-label');
+    const feedbackBox = document.getElementById('feedback-box');
+    const btnSubmit = document.getElementById('btn-submit');
+
+    const btnInstallApp = document.getElementById('btn-install-app');
+    const installModal = document.getElementById('install-modal');
+    const btnCloseModal = document.getElementById('btn-close-modal');
+    const btnModalUnderstand = document.getElementById('btn-modal-understand');
+
+    // Configuración PWA autónoma en un solo archivo (Ícono PNG + Web Manifest para GitHub Pages)
+    let deferredInstallPrompt = null;
+
+    function setupSingleFilePWA() {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = 192;
+        canvas.height = 192;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          // Fondo redondeado oscuro
+          ctx.fillStyle = '#0f172a';
+          ctx.fillRect(0, 0, 192, 192);
+          ctx.fillStyle = '#1e293b';
+          ctx.strokeStyle = '#25d366';
+          ctx.lineWidth = 6;
+          ctx.beginPath();
+          ctx.roundRect(12, 12, 168, 168, 36);
+          ctx.fill();
+          ctx.stroke();
+
+          // Círculo central verde WhatsApp
+          ctx.fillStyle = '#25d366';
+          ctx.beginPath();
+          ctx.arc(96, 92, 46, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Iniciales WA
+          ctx.fillStyle = '#052e16';
+          ctx.font = 'bold 38px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('WA', 96, 94);
+
+          const iconDataUrl = canvas.toDataURL('image/png');
+          const appleLink = document.getElementById('apple-touch-icon-link');
+          if (appleLink) appleLink.href = iconDataUrl;
+
+          const manifestObj = {
+            name: 'Asistente de Ventas - WhatsApp',
+            short_name: 'Ventas WA',
+            description: 'Panel de envío de cotizaciones y planes por WhatsApp',
+            start_url: './',
+            display: 'standalone',
+            background_color: '#0f172a',
+            theme_color: '#0f172a',
+            icons: [
+              {
+                src: iconDataUrl,
+                sizes: '192x192',
+                type: 'image/png',
+                purpose: 'any maskable'
+              }
+            ]
+          };
+
+          const manifestBlob = new Blob([JSON.stringify(manifestObj)], { type: 'application/manifest+json' });
+          const manifestUrl = URL.createObjectURL(manifestBlob);
+          const manifestLink = document.createElement('link');
+          manifestLink.rel = 'manifest';
+          manifestLink.href = manifestUrl;
+          document.head.appendChild(manifestLink);
+        }
+      } catch (e) {
+        // Fallback silencioso si el navegador restringe canvas/blob
+      }
+    }
+
+    setupSingleFilePWA();
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+    });
+
+    btnInstallApp.addEventListener('click', async () => {
+      if (deferredInstallPrompt) {
+        deferredInstallPrompt.prompt();
+        await deferredInstallPrompt.userChoice;
+        deferredInstallPrompt = null;
+      } else {
+        installModal.classList.remove('hidden');
+      }
+    });
+
+    btnCloseModal.addEventListener('click', () => {
+      installModal.classList.add('hidden');
+    });
+
+    btnModalUnderstand.addEventListener('click', () => {
+      installModal.classList.add('hidden');
+    });
+
+    installModal.addEventListener('click', (e) => {
+      if (e.target === installModal) {
+        installModal.classList.add('hidden');
+      }
+    });
+
+    function showFeedback(text, type = 'error') {
+      feedbackBox.textContent = text;
+      feedbackBox.className = `feedback-box ${type}`;
+    }
+
+    function hideFeedback() {
+      feedbackBox.className = 'feedback-box hidden';
+      feedbackBox.textContent = '';
+    }
+
+    function updateCharCount() {
+      charCount.textContent = `${previewText.value.length} caracteres`;
+    }
+
+    function setPreviewMessage(text) {
+      previewText.value = text || '';
+      previewText.classList.remove('input-error');
+      updateCharCount();
+      hideFeedback();
+    }
+
+    // Limpieza en tiempo real de teléfono y vista previa del número
+    function updatePhoneInputs() {
+      const cleanCode = phoneCode.value.replace(/\D/g, '');
+      let cleanPhone = clientPhone.value.replace(/\D/g, '');
+      if (cleanPhone.startsWith('0')) {
+        cleanPhone = cleanPhone.replace(/^0+/, '');
+      }
+
+      if (phoneCode.value !== cleanCode) phoneCode.value = cleanCode;
+      if (clientPhone.value !== cleanPhone) clientPhone.value = cleanPhone;
+
+      clientPhone.classList.remove('input-error');
+      phoneCode.classList.remove('input-error');
+      hideFeedback();
+
+      const prefix = cleanCode || '58';
+      phoneBadge.textContent = cleanPhone ? `+${prefix} ${cleanPhone}` : `+${prefix} ...`;
+    }
+
+    phoneCode.addEventListener('input', updatePhoneInputs);
+    clientPhone.addEventListener('input', updatePhoneInputs);
+    previewText.addEventListener('input', () => {
+      previewText.classList.remove('input-error');
+      updateCharCount();
+      hideFeedback();
+    });
+
+    // Manejo de cambio en la opción principal (ocultando sub-bloques hasta elegir)
+    mainOption.addEventListener('change', () => {
+      blockEspecifico.classList.add('hidden');
+      blockInstalacion.classList.add('hidden');
+      blockPlanes.classList.add('hidden');
+
+      // Reiniciar sub-selectores para mostrar solo lo necesario paso a paso
+      espTecnologia.selectedIndex = 0;
+      espPlanFtth.selectedIndex = 0;
+      espPlanFtto.selectedIndex = 0;
+      groupEspFtth.classList.add('hidden');
+      groupEspFtto.classList.add('hidden');
+
+      instTecnologia.selectedIndex = 0;
+      instTipo.selectedIndex = 0;
+      planesTipo.selectedIndex = 0;
+
+      setPreviewMessage('');
+
+      if (mainOption.value === 'especifico') {
+        blockEspecifico.classList.remove('hidden');
+      } else if (mainOption.value === 'instalacion') {
+        blockInstalacion.classList.remove('hidden');
+      } else if (mainOption.value === 'planes') {
+        blockPlanes.classList.remove('hidden');
+      }
+    });
+
+    // Plan específico: cambio de tecnología
+    espTecnologia.addEventListener('change', () => {
+      espPlanFtth.selectedIndex = 0;
+      espPlanFtto.selectedIndex = 0;
+      setPreviewMessage('');
+
+      if (espTecnologia.value === 'FTTH') {
+        groupEspFtth.classList.remove('hidden');
+        groupEspFtto.classList.add('hidden');
+      } else if (espTecnologia.value === 'FTTO') {
+        groupEspFtth.classList.add('hidden');
+        groupEspFtto.classList.remove('hidden');
+      }
+    });
+
+    // Plan específico: selección de plan FTTH
+    espPlanFtth.addEventListener('change', () => {
+      const plan = espPlanFtth.value;
+      if (plan && messages.especifico.FTTH[plan]) {
+        setPreviewMessage(messages.especifico.FTTH[plan]);
+      }
+    });
+
+    // Plan específico: selección de plan FTTO
+    espPlanFtto.addEventListener('change', () => {
+      const plan = espPlanFtto.value;
+      if (plan && messages.especifico.FTTO[plan]) {
+        setPreviewMessage(messages.especifico.FTTO[plan]);
+      }
+    });
+
+    // Costo de instalación: cálculo dinámico
+    function updateInstalacionText() {
+      const tec = instTecnologia.value;
+      const tipo = instTipo.value;
+      if (tec && tipo && messages.instalacion[tec] && messages.instalacion[tec][tipo]) {
+        setPreviewMessage(messages.instalacion[tec][tipo]);
+      }
+    }
+    instTecnologia.addEventListener('change', updateInstalacionText);
+    instTipo.addEventListener('change', updateInstalacionText);
+
+    // Costo de planes: selección de tipo
+    planesTipo.addEventListener('change', () => {
+      const tipo = planesTipo.value;
+      if (tipo && messages.planes[tipo]) {
+        setPreviewMessage(messages.planes[tipo]);
+      }
+    });
+
+    // Copiar texto al portapapeles
+    btnCopy.addEventListener('click', () => {
+      const text = previewText.value.trim();
+      if (!text) {
+        showFeedback('Selecciona primero una opción para generar el mensaje a copiar.', 'error');
+        return;
+      }
+
+      const markCopied = () => {
+        copyLabel.textContent = '¡Copiado!';
+        setTimeout(() => {
+          copyLabel.textContent = 'Copiar texto';
+        }, 1600);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(previewText.value).then(markCopied).catch(() => {
+          previewText.select();
+          document.execCommand('copy');
+          markCopied();
+        });
+      } else {
+        previewText.select();
+        document.execCommand('copy');
+        markCopied();
+      }
+    });
+
+    // Disparar envío a WhatsApp
+    btnSubmit.addEventListener('click', () => {
+      let rawPhone = clientPhone.value.trim().replace(/\D/g, '');
+      const code = phoneCode.value.trim().replace(/\D/g, '');
+      const message = previewText.value.trim();
+
+      if (!code) {
+        phoneCode.classList.add('input-error');
+        phoneCode.focus();
+        showFeedback('Por favor, ingresa el código de país (ej: 58).', 'error');
+        return;
+      }
+
+      if (!rawPhone) {
+        clientPhone.classList.add('input-error');
+        clientPhone.focus();
+        showFeedback('Por favor, ingresa el número de teléfono del cliente.', 'error');
+        return;
+      }
+
+      if (!message) {
+        previewText.classList.add('input-error');
+        showFeedback('Debes seleccionar las opciones correspondientes para generar el mensaje a enviar.', 'error');
+        return;
+      }
+
+      // Si el usuario escribió el número local con un 0 inicial (ej: 0412...), removerlo
+      if (rawPhone.startsWith('0')) {
+        rawPhone = rawPhone.replace(/^0+/, '');
+      }
+
+      const fullPhone = `${code}${rawPhone}`;
+      const encodedMessage = encodeURIComponent(message);
+      const whatsappUrl = `https://api.whatsapp.com/send?phone=${fullPhone}&text=${encodedMessage}`;
+
+      showFeedback(`Abriendo chat de WhatsApp con +${fullPhone}...`, 'success');
+      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+    });
+  </script>
+</body>
+</html>
